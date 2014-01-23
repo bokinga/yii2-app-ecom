@@ -1,0 +1,5 @@
+vendor
+runtime
+composer.lock
+.idea
+config/db.php

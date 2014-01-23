@@ -1,0 +1,45 @@
+{
+	"name": "opus-online/yii2-app-ecom",
+	"description": "Sample application using the yii2-ecom package",
+	"minimum-stability": "dev",
+	"type": "project",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "Ivo Kund",
+			"email": "ivo@opus.ee"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"yiisoft/yii2": "*",
+		"yiisoft/yii2-bootstrap": "*",
+		"opus-online/yii2-payment": "*"
+	},
+	"require-dev": {
+		"yiisoft/yii2-debug": "*",
+		"yiisoft/yii2-gii": "*",
+		"opus-online/yii2-giimodel": "*"
+
+	},
+	"scripts": {
+		"post-create-project-cmd": [
+			"./yii init/config"
+		]
+	},
+	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/opus-online/yii2-payment"
+		},
+		{
+			"type": "vcs",
+			"url": "https://github.com/opus-online/yii2-giimodel"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"opus\\ecom\\": "ecom/"
+		}
+	}
+}
