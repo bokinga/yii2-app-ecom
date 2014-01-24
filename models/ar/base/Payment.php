@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_payment".
@@ -14,9 +14,9 @@ namespace app\models\base;
  * @property string $data_dump
  * @property string $created
  *
- * @property \app\models\User $user
- * @property \app\models\Order $order
- * @method static \yii\db\ActiveQuery|\app\models\Payment|null find($q=null)
+ * @property \app\models\ar\User $user
+ * @property \app\models\ar\Order $order
+ * @method static \yii\db\ActiveQuery|\app\models\ar\Payment|null find($q=null)
  */
 abstract class Payment extends \yii\db\ActiveRecord
 {
@@ -65,7 +65,7 @@ abstract class Payment extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\app\models\ar\User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -73,6 +73,6 @@ abstract class Payment extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(\app\models\Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
     }
 }

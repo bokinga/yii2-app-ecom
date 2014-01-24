@@ -1,7 +1,7 @@
 <?php
 
 $params = require(__DIR__ . '/params.php');
-$db = require(__DIR__ . '/db.php');
+$db = require(__DIR__ . '/db-local.php');
 
 $config = [
 	'id' => 'basic',
@@ -16,6 +16,9 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'rules' => [
+                'bankret' => 'order/bank-return'
+            ]
         ],
 		'errorHandler' => [
 			'errorAction' => 'site/error',
@@ -31,9 +34,15 @@ $config = [
 		],
 		'db' => $db,
         'ecom' => [
-            'class' => 'opus\ecom\Component',
-            'purchasableTypes' => [
-                'app\\modules\\Product'
+            'class' => 'app\components\MyEcomComponent',
+            'payment' => [
+                'class' => 'app\components\MyPaymentHandler',
+                'params' => [
+                    'common' => [
+                        'returnRoute' => 'bankret',
+                    ],
+                    'adapters' => \yii\helpers\ArrayHelper::merge(require 'banks-default.php', require 'banks-local.php')
+                ]
             ],
         ],
 	],
@@ -45,7 +54,7 @@ $config = [
                 'giimodel' => [
                     'class' => '\opus\giimodel\Generator',
                     'prefixMap' => [
-                        'eco_' => '\app\models',
+                        'eco_' => '\app\models\ar',
                     ]
                 ],
             ],

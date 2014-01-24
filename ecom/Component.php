@@ -7,10 +7,11 @@
 
 namespace opus\ecom;
 
-use app\models\Product;
+use opus\ecom\models\OrderableInterface;
+use opus\payment\services\payment\Transaction;
 
 /**
- * Class EcomComponent
+ * This is the main class of the opus\ecom component that should be registered as an application component.
  *
  * @author Ivo Kund <ivo@opus.ee>
  * @package ecom
@@ -18,26 +19,43 @@ use app\models\Product;
 class Component extends \yii\base\Component
 {
     /**
-     * @var array
-     */
-    public $purchasableTypes;
-    /**
+     * Override to customize your basket object
+     *
      * @var string|\opus\ecom\Basket
      */
     public $basket = '\opus\ecom\Basket';
 
     /**
+     * Override to customize the formatter
+     *
      * @var string|\opus\ecom\Formatter
      */
     public $formatter = '\opus\ecom\Formatter';
 
+    /**
+     * Override to to customize payment-related functionality
+     * @var string|\opus\ecom\Payment
+     */
+    public $payment = '\opus\ecom\Payment';
+
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
-        $this->basket = \Yii::createObject($this->basket, [
+        // initialize sub-components
+        $this->formatter = \Yii::createObject($this->formatter);
+
+        $basketConf = is_string($this->basket) ? ['class' => $this->basket] : $this->basket;
+        $this->basket = \Yii::createObject($basketConf + [
             'session' => \Yii::$app->session,
             'component' => $this,
         ]);
-        $this->formatter = \Yii::createObject($this->formatter);
+
+        $paymentConf = is_string($this->payment) ? ['class' => $this->payment] : $this->payment;
+        $this->payment = \Yii::createObject($paymentConf + [
+            'component' => $this,
+        ]);
 
 //        $this->test();
     }
@@ -52,7 +70,26 @@ class Component extends \yii\base\Component
 //        }
 
 
-        $product = Product::find()->one();
-        $this->basket->add($product, ['quantity' => 2]);
+//        for ($i=0; $i<5; $i++) {
+//            $user = new User([
+//                'name' => 'Example User ' . ($i+1)
+//            ]);
+//            $user->save();
+//        }
+
+
+//        $product = Product::find()->one();
+//        $this->basket->add($product, ['quantity' => 2]);
+    }
+
+    /**
+     * Override this to write custom parameters to the transaction before it's sent to the bank
+     *
+     * @param OrderableInterface $order
+     * @param Transaction $transaction
+     */
+    public function finalizeTransaction(OrderableInterface $order, Transaction $transaction)
+    {
+        // default behaviour does not alter transaction object
     }
 }

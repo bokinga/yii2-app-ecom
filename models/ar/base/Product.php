@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_product".
@@ -8,9 +8,9 @@ namespace app\models\base;
  * @property integer $id
  * @property integer $price
  *
- * @property \app\models\InvoiceLine[] $invoiceLines
- * @property \app\models\OrderLine[] $orderLines
- * @method static \yii\db\ActiveQuery|\app\models\Product|null find($q=null)
+ * @property \app\models\ar\InvoiceLine[] $invoiceLines
+ * @property \app\models\ar\OrderLine[] $orderLines
+ * @method static \yii\db\ActiveQuery|\app\models\ar\Product|null find($q=null)
  */
 abstract class Product extends \yii\db\ActiveRecord
 {
@@ -49,7 +49,7 @@ abstract class Product extends \yii\db\ActiveRecord
      */
     public function getInvoiceLines()
     {
-        return $this->hasMany(\app\models\InvoiceLine::className(), ['product_id' => 'id']);
+        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['product_id' => 'id']);
     }
 
     /**
@@ -57,6 +57,6 @@ abstract class Product extends \yii\db\ActiveRecord
      */
     public function getOrderLines()
     {
-        return $this->hasMany(\app\models\OrderLine::className(), ['product_id' => 'id']);
+        return $this->hasMany(\app\models\ar\OrderLine::className(), ['product_id' => 'id']);
     }
 }

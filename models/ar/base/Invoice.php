@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_invoice".
@@ -11,9 +11,9 @@ namespace app\models\base;
  * @property string $due_datetime
  * @property string $created
  *
- * @property \app\models\Order $order
- * @property \app\models\InvoiceLine[] $invoiceLines
- * @method static \yii\db\ActiveQuery|\app\models\Invoice|null find($q=null)
+ * @property \app\models\ar\Order $order
+ * @property \app\models\ar\InvoiceLine[] $invoiceLines
+ * @method static \yii\db\ActiveQuery|\app\models\ar\Invoice|null find($q=null)
  */
 abstract class Invoice extends \yii\db\ActiveRecord
 {
@@ -56,7 +56,7 @@ abstract class Invoice extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(\app\models\Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
     }
 
     /**
@@ -64,6 +64,6 @@ abstract class Invoice extends \yii\db\ActiveRecord
      */
     public function getInvoiceLines()
     {
-        return $this->hasMany(\app\models\InvoiceLine::className(), ['invoice_id' => 'id']);
+        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['invoice_id' => 'id']);
     }
 }

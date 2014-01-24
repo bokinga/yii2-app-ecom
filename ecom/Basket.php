@@ -7,15 +7,17 @@
 
 namespace opus\ecom;
 
-use opus\ecom\basket\DataProvider;
 use opus\ecom\basket\Item;
+use opus\ecom\basket\StorageInterface;
+use opus\ecom\models\OrderableInterface;
 use opus\ecom\models\PurchasableInterface;
 use yii\base\InvalidParamException;
 use yii\base\Object;
 use yii\web\Session;
 
 /**
- * Class Basket
+ * Provides basic basket functionality (adding, removing, clearing, listing items). You can extend this class and
+ * override it in the application configuration to extend/customize the functionality
  *
  * @author Ivo Kund <ivo@opus.ee>
  * @package opus\ecom
@@ -24,18 +26,17 @@ use yii\web\Session;
  */
 class Basket extends Object
 {
-    /**
-     * @var Component
-     */
-    public $component;
+    use SubComponentTrait;
     /**
      * @var Session
      */
-    public $session;
+    private $_session;
     /**
+     * Override this to provide custom (e.g. database) storage for basket data
+     *
      * @var string|\opus\ecom\basket\StorageInterface
      */
-    public $storage = 'opus\ecom\basket\storage\Session';
+    private $_storage = 'opus\ecom\basket\storage\Session';
 
     /**
      * @var string Internal class name for holding basket elements
@@ -53,6 +54,24 @@ class Basket extends Object
     {
         $this->storage = \Yii::createObject($this->storage);
         $this->setItems($this->storage->load($this));
+    }
+
+    /**
+     * @param OrderableInterface $order
+     * @param bool $clear
+     * @throws \Exception
+     */
+    public function createOrder(OrderableInterface $order, $clear = true)
+    {
+        try
+        {
+            $order->saveFromBasket($this);
+            $clear && $this->clear();
+        }
+        catch (\Exception $exception)
+        {
+            throw $exception;
+        }
     }
 
     /**
@@ -130,5 +149,55 @@ class Basket extends Object
     public function getCount()
     {
         return count($this->items);
+    }
+
+    /**
+     * @param bool $format
+     * @return float|int|string
+     */
+    public function getTotalDue($format = true)
+    {
+        $sum = 0;
+        foreach ($this->getItems() as $item)
+        {
+            $sum += $item->getTotalPrice();
+        }
+        return $format ? $this->component->formatter->asPrice($sum) : $sum;
+    }
+
+    /**
+     * @param \yii\web\Session $session
+     * @return Basket
+     */
+    public function setSession(Session $session)
+    {
+        $this->_session = $session;
+        return $this;
+    }
+
+    /**
+     * @return \yii\web\Session
+     */
+    public function getSession()
+    {
+        return $this->_session;
+    }
+
+    /**
+     * @param \opus\ecom\basket\StorageInterface|string $storage
+     * @return Basket
+     */
+    public function setStorage(StorageInterface $storage)
+    {
+        $this->_storage = $storage;
+        return $this;
+    }
+
+    /**
+     * @return \opus\ecom\basket\StorageInterface|string
+     */
+    protected function getStorage()
+    {
+        return $this->_storage;
     }
 } 

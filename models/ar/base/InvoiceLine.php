@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_invoice_line".
@@ -13,10 +13,10 @@ namespace app\models\base;
  * @property string $item_label
  * @property string $due_amount
  *
- * @property \app\models\Product $product
- * @property \app\models\Invoice $invoice
- * @property \app\models\OrderLine $orderLine
- * @method static \yii\db\ActiveQuery|\app\models\InvoiceLine|null find($q=null)
+ * @property \app\models\ar\Product $product
+ * @property \app\models\ar\Invoice $invoice
+ * @property \app\models\ar\OrderLine $orderLine
+ * @method static \yii\db\ActiveQuery|\app\models\ar\InvoiceLine|null find($q=null)
  */
 abstract class InvoiceLine extends \yii\db\ActiveRecord
 {
@@ -62,7 +62,7 @@ abstract class InvoiceLine extends \yii\db\ActiveRecord
      */
     public function getProduct()
     {
-        return $this->hasOne(\app\models\Product::className(), ['id' => 'product_id']);
+        return $this->hasOne(\app\models\ar\Product::className(), ['id' => 'product_id']);
     }
 
     /**
@@ -70,7 +70,7 @@ abstract class InvoiceLine extends \yii\db\ActiveRecord
      */
     public function getInvoice()
     {
-        return $this->hasOne(\app\models\Invoice::className(), ['id' => 'invoice_id']);
+        return $this->hasOne(\app\models\ar\Invoice::className(), ['id' => 'invoice_id']);
     }
 
     /**
@@ -78,6 +78,6 @@ abstract class InvoiceLine extends \yii\db\ActiveRecord
      */
     public function getOrderLine()
     {
-        return $this->hasOne(\app\models\OrderLine::className(), ['id' => 'order_line_id']);
+        return $this->hasOne(\app\models\ar\OrderLine::className(), ['id' => 'order_line_id']);
     }
 }

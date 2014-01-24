@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_user".
@@ -8,9 +8,9 @@ namespace app\models\base;
  * @property integer $id
  * @property string $name
  *
- * @property \app\models\Order[] $orders
- * @property \app\models\Payment[] $payments
- * @method static \yii\db\ActiveQuery|\app\models\User|null find($q=null)
+ * @property \app\models\ar\Order[] $orders
+ * @property \app\models\ar\Payment[] $payments
+ * @method static \yii\db\ActiveQuery|\app\models\ar\User|null find($q=null)
  */
 abstract class User extends \yii\db\ActiveRecord
 {
@@ -48,7 +48,7 @@ abstract class User extends \yii\db\ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(\app\models\Order::className(), ['user_id' => 'id']);
+        return $this->hasMany(\app\models\ar\Order::className(), ['user_id' => 'id']);
     }
 
     /**
@@ -56,6 +56,6 @@ abstract class User extends \yii\db\ActiveRecord
      */
     public function getPayments()
     {
-        return $this->hasMany(\app\models\Payment::className(), ['user_id' => 'id']);
+        return $this->hasMany(\app\models\ar\Payment::className(), ['user_id' => 'id']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_order".
@@ -8,13 +8,14 @@ namespace app\models\base;
  * @property integer $id
  * @property integer $user_id
  * @property string $status
+ * @property integer $due_amount
  * @property string $created
  *
- * @property \app\models\Invoice[] $invoices
- * @property \app\models\User $user
- * @property \app\models\OrderLine[] $orderLines
- * @property \app\models\Payment[] $payments
- * @method static \yii\db\ActiveQuery|\app\models\Order|null find($q=null)
+ * @property \app\models\ar\Invoice[] $invoices
+ * @property \app\models\ar\User $user
+ * @property \app\models\ar\OrderLine[] $orderLines
+ * @property \app\models\ar\Payment[] $payments
+ * @method static \yii\db\ActiveQuery|\app\models\ar\Order|null find($q=null)
  */
 abstract class Order extends \yii\db\ActiveRecord
 {
@@ -32,8 +33,8 @@ abstract class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-			[['user_id', 'status', 'created'], 'required'],
-			[['user_id'], 'integer'],
+			[['user_id', 'status', 'due_amount', 'created'], 'required'],
+			[['user_id', 'due_amount'], 'integer'],
 			[['created'], 'safe'],
 			[['status'], 'string', 'max' => 20]
 		];
@@ -48,6 +49,7 @@ abstract class Order extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'status' => 'Status',
+            'due_amount' => 'Due Amount',
             'created' => 'Created',
         ];
     }
@@ -57,7 +59,7 @@ abstract class Order extends \yii\db\ActiveRecord
      */
     public function getInvoices()
     {
-        return $this->hasMany(\app\models\Invoice::className(), ['order_id' => 'id']);
+        return $this->hasMany(\app\models\ar\Invoice::className(), ['order_id' => 'id']);
     }
 
     /**
@@ -65,7 +67,7 @@ abstract class Order extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\app\models\ar\User::className(), ['id' => 'user_id']);
     }
 
     /**
@@ -73,7 +75,7 @@ abstract class Order extends \yii\db\ActiveRecord
      */
     public function getOrderLines()
     {
-        return $this->hasMany(\app\models\OrderLine::className(), ['order_id' => 'id']);
+        return $this->hasMany(\app\models\ar\OrderLine::className(), ['order_id' => 'id']);
     }
 
     /**
@@ -81,6 +83,6 @@ abstract class Order extends \yii\db\ActiveRecord
      */
     public function getPayments()
     {
-        return $this->hasMany(\app\models\Payment::className(), ['order_id' => 'id']);
+        return $this->hasMany(\app\models\ar\Payment::className(), ['order_id' => 'id']);
     }
 }

@@ -1,39 +1,33 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace app\commands;
 
 use yii\console\Controller;
-use yii\helpers\Console;
 
 /**
- * This command echoes the first argument that you have entered.
+ * Initialization controller
  *
- * This command is provided as an example for you to learn how to create console commands.
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * @author Ivo Kund <ivo@opus.ee>
+ * @package app\commands
  */
 class InitController extends Controller
 {
-
-    public $defaultAction = 'database';
-
     /**
      * @var array
      */
     private $sqlMap = [
         '01-schema.sql',
-//        '02-testdata.sql',
+        '02-testdata.sql',
     ];
+
+    public function actionIndex()
+    {
+        $this->actionConfig();
+    }
 
     public function actionConfig()
     {
-        $configPath = \Yii::getAlias('@app/config/db.php');
+        $configPath = \Yii::getAlias('@app/config/db-local.php');
 
         if (!file_exists($configPath) && $this->confirm('Write database parameters now?', true))
         {
@@ -61,14 +55,79 @@ CONF;
             }
         }
 
+
+        $configPath = \Yii::getAlias('@app/config/banks-local.php');
+        if (!file_exists($configPath) && $this->confirm('Write default bank config now?', true))
+        {
+            $config = <<<"CONF"
+<?php
+return [
+    'SWEDBANK' => [
+        'params' => [
+            'VK_SND_ID' => '',
+            'VK_ACC' => '',
+            'VK_NAME' => '',
+        ],
+    ],
+    'SEB' => [
+        'params' => [
+            'VK_ACC' => '',
+            'VK_NAME' => '',
+            'VK_SND_ID' => '',
+        ],
+    ],
+    'DANSKE' => [
+        'params' => [
+            'VK_ACC' => '',
+            'VK_NAME' => '',
+            'VK_SND_ID' => '',
+        ],
+    ],
+    'LHV' => [
+        'params' => [
+            'VK_ACC' => '',
+            'VK_NAME' => '',
+            'VK_SND_ID' => '',
+        ],
+    ],
+    'KREDIIDIPANK' => [
+        'params' => [
+            'VK_ACC' => '',
+            'VK_NAME' => '',
+            'VK_SND_ID' => '',
+        ],
+    ],
+
+    'NORDEA' => [
+        'params' => [
+            'SOLOPMT_RCV_ID' => '',
+            'SOLOPMT_LANGUAGE' => 4,
+            'MAC_SECRET' => '',
+        ],
+    ],
+
+    'CREDIT_CARD' => [
+        'params' => [
+            'id' => '',
+        ],
+    ],
+];
+CONF;
+            if (file_put_contents($configPath, $config)) {
+                $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
+            }
+        }
     }
 
 	public function actionDatabase()
 	{
         if ($this->confirm('Import database dumps now?', true))
         {
-            \Yii::$app->db->open();
-            \Yii::$app->db->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, 1);
+            $db = \Yii::$app->db;
+            $db->open();
+            $db->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, 1);
+
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 0;')->execute();
             foreach ($this->sqlMap as $sqlFile) {
                 $path = \Yii::getAlias('@app/schema/' . $sqlFile);
                 echo sprintf('Loading "%s"%s', $sqlFile, PHP_EOL);
@@ -83,7 +142,9 @@ CONF;
                     echo sprintf('Failure' . \PHP_EOL);
                 }
             }
-            $this->stdout("Done");
+            $db->createCommand('SET FOREIGN_KEY_CHECKS = 1;')->execute();
+
+            $this->stdout("Done\n");
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models\base;
+namespace app\models\ar\base;
 
 /**
  * This is the base model class for table "eco_order_line".
@@ -9,11 +9,12 @@ namespace app\models\base;
  * @property integer $order_id
  * @property integer $product_id
  * @property string $quantity
+ * @property integer $due_amount
  *
- * @property \app\models\InvoiceLine[] $invoiceLines
- * @property \app\models\Product $product
- * @property \app\models\Order $order
- * @method static \yii\db\ActiveQuery|\app\models\OrderLine|null find($q=null)
+ * @property \app\models\ar\InvoiceLine[] $invoiceLines
+ * @property \app\models\ar\Order $order
+ * @property \app\models\ar\Product $product
+ * @method static \yii\db\ActiveQuery|\app\models\ar\OrderLine|null find($q=null)
  */
 abstract class OrderLine extends \yii\db\ActiveRecord
 {
@@ -31,8 +32,8 @@ abstract class OrderLine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-			[['order_id', 'product_id', 'quantity'], 'required'],
-			[['order_id', 'product_id'], 'integer'],
+			[['order_id', 'product_id', 'quantity', 'due_amount'], 'required'],
+			[['order_id', 'product_id', 'due_amount'], 'integer'],
 			[['quantity'], 'number']
 		];
     }
@@ -47,6 +48,7 @@ abstract class OrderLine extends \yii\db\ActiveRecord
             'order_id' => 'Order ID',
             'product_id' => 'Product ID',
             'quantity' => 'Quantity',
+            'due_amount' => 'Due Amount',
         ];
     }
 
@@ -55,15 +57,7 @@ abstract class OrderLine extends \yii\db\ActiveRecord
      */
     public function getInvoiceLines()
     {
-        return $this->hasMany(\app\models\InvoiceLine::className(), ['order_line_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveRelation
-     */
-    public function getProduct()
-    {
-        return $this->hasOne(\app\models\Product::className(), ['id' => 'product_id']);
+        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['order_line_id' => 'id']);
     }
 
     /**
@@ -71,6 +65,14 @@ abstract class OrderLine extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(\app\models\Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveRelation
+     */
+    public function getProduct()
+    {
+        return $this->hasOne(\app\models\ar\Product::className(), ['id' => 'product_id']);
     }
 }

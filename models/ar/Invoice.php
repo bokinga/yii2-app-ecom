@@ -1,12 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\models\ar;
 
 /**
- * This is the model class for table "eco_payment".
+ * This is the model class for table "eco_invoice".
  *
  */
-class Payment extends base\Payment
+class Invoice extends base\Invoice
 {
     /**
      * @inheritdoc

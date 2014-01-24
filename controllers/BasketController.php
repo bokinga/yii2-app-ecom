@@ -8,11 +8,18 @@
 namespace app\controllers;
 
 
+use app\models\ar\Order;
+use app\models\ar\Product;
+use app\models\ar\User;
+use app\models\BasketModel;
 use opus\ecom\Basket;
+use yii\db\Expression;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use Yii;
 
 /**
- * Class BasketController
+ * Controller for basket actions
  *
  * @author Ivo Kund <ivo@opus.ee>
  * @package app\controllers
@@ -20,15 +27,44 @@ use yii\web\Controller;
 class BasketController  extends Controller
 {
     /**
+     * @var Basket
+     */
+    protected $basket;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->basket =  \Yii::$app->ecom->basket;
+    }
+
+    /**
      * @return string
      */
     public function actionIndex()
     {
-        /** @var $basket Basket */
-        $basket = \Yii::$app->ecom->basket;
+        $model = new BasketModel;
+
+        if ($_POST && $model->load($_POST))
+        {
+            // create order
+            $order = new Order([
+                'user_id' => $model->userId,
+                'status' => 'new',
+                'created' => new Expression('NOW()'),
+            ]);
+
+            $this->basket->createOrder($order);
+            $this->redirect(['order/pay', 'orderId' => $order->id]);
+        }
+
 
         $params = [
-            'basket' => $basket,
+            'basket' => $this->basket,
+            'users' => ArrayHelper::map(User::find()->all(), 'id', 'name'),
+            'model' => $model,
         ];
         return $this->render('index', $params);
     }
@@ -38,15 +74,17 @@ class BasketController  extends Controller
      */
     public function actionDelete($id)
     {
-        /** @var $basket Basket */
-        $basket = \Yii::$app->ecom->basket;
-        $basket->remove($id);
-        $this->redirect('basket');
+        $this->basket->remove($id);
+        $this->redirect('basket/index');
     }
 
-    public function actionAddToBasket($id)
+    /**
+     * @param $id
+     */
+    public function actionAddProduct($id)
     {
-
-
+        $product = Product::find($id);
+        $this->basket->add($product);
+        $this->redirect('basket/index');
     }
 } 

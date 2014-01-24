@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\ar;
 
 /**
  * This is the model class for table "eco_invoice_line".
