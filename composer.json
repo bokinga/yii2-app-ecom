@@ -21,20 +21,7 @@
 		"yiisoft/yii2-gii": "*",
 		"opus-online/yii2-giimodel": "*"
 	},
-	"scripts": {
-		"post-install-cmd": [
-			"php yii init"
-		]
-	},
 	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/opus-online/yii2-ecom"
-		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/opus-online/yii2-payment"
-		},
 		{
 			"type": "vcs",
 			"url": "https://github.com/opus-online/yii2-giimodel"
