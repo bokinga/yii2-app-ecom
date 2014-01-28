@@ -11,12 +11,10 @@ Installation
 ------------
 You need an environment running PHP 5.4+ and an empty database. 
 
-1. `git clone https://github.com/opus-online/yii2-app-ecom`
+1. `composer create-project opus-online/yii2-app-ecom --stability=dev`
 2. `cd yii2-app-ecom`
-3. `composer install --no-dev`
-4. `./yii init`
-5. Follow the instructions on the screen to set up the database
-6. Open `<directory>/web` in your web browser
+3. Run `./yii init` and follow the instructions on the screen to set up the database
+4. Open `<directory>/web` in your web browser
 
 See the [documentation](https://github.com/opus-online/yii2-payment) for `opus-online/yii2-ecom` for more. 
 
