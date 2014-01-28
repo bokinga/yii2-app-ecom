@@ -23,19 +23,8 @@
 
 	},
 	"scripts": {
-		"post-create-project-cmd": [
-			"yii\\composer\\Installer::setPermission",
+		"post-install-cmd": [
 			"./yii init"
-		]
-	},
-	"extra": {
-		"writable": [
-			"runtime",
-			"web/assets",
-			"config"
-		],
-		"executable": [
-			"yii"
 		]
 	},
 	"repositories": [

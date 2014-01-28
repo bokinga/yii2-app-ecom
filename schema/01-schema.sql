@@ -7,7 +7,6 @@ CREATE TABLE `eco_discount` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
 DROP TABLE IF EXISTS `eco_invoice`;
 CREATE TABLE `eco_invoice` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -19,7 +18,6 @@ CREATE TABLE `eco_invoice` (
 	KEY `order_id` (`order_id`),
 	CONSTRAINT `FK_eco_invoice_eco_order` FOREIGN KEY (`order_id`) REFERENCES `eco_order` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 DROP TABLE IF EXISTS `eco_order`;
 CREATE TABLE `eco_order` (
