@@ -6,8 +6,6 @@
  * @var \yii\web\View $this
  * @var \opus\ecom\models\OrderableInterface $order
  */
-
-use opus\ecom\assets\PayAssetBundle;
 ?>
 
 

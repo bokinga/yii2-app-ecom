@@ -2,6 +2,7 @@
 
 namespace app\commands;
 
+use opus\payment\helpers\InstallHelper;
 use yii\console\Controller;
 
 /**
@@ -54,65 +55,18 @@ CONF;
             }
         }
 
-        $configPath = \Yii::getAlias('@app/config/banks-local.php');
+        $configPath = \Yii::getAlias('@app/config/banks-default.php');
         if (!file_exists($configPath) && $this->confirm('Write default bank config now?', true)) {
-            $config = <<<"CONF"
-<?php
-return [
-    'SWEDBANK' => [
-        'params' => [
-            'VK_SND_ID' => '',
-            'VK_ACC' => '',
-            'VK_NAME' => '',
-        ],
-    ],
-    'SEB' => [
-        'params' => [
-            'VK_ACC' => '',
-            'VK_NAME' => '',
-            'VK_SND_ID' => '',
-        ],
-    ],
-    'DANSKE' => [
-        'params' => [
-            'VK_ACC' => '',
-            'VK_NAME' => '',
-            'VK_SND_ID' => '',
-        ],
-    ],
-    'LHV' => [
-        'params' => [
-            'VK_ACC' => '',
-            'VK_NAME' => '',
-            'VK_SND_ID' => '',
-        ],
-    ],
-    'KREDIIDIPANK' => [
-        'params' => [
-            'VK_ACC' => '',
-            'VK_NAME' => '',
-            'VK_SND_ID' => '',
-        ],
-    ],
 
-    'NORDEA' => [
-        'params' => [
-            'SOLOPMT_RCV_ID' => '',
-            'SOLOPMT_LANGUAGE' => 4,
-            'MAC_SECRET' => '',
-        ],
-    ],
+            InstallHelper::ensureConfigFile($configPath, InstallHelper::CONF_DEFAULT);
+            $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
+        }
 
-    'CREDIT_CARD' => [
-        'params' => [
-            'id' => '',
-        ],
-    ],
-];
-CONF;
-            if (file_put_contents($configPath, $config)) {
-                $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
-            }
+        $configPath = \Yii::getAlias('@app/config/banks-default.php');
+        if (!file_exists($configPath) && $this->confirm('Write default localized bank config now?', true)) {
+
+            InstallHelper::ensureConfigFile($configPath, InstallHelper::CONF_LOCAL);
+            $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
         }
     }
 
