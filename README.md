@@ -1,4 +1,4 @@
-Sample application using yii2-ecom package
+Sample application using yii2-ecom
 =============
 The only purpose of this package is to demonstrate usage and features of the package [opus-online/yii2-ecom](https://github.com/opus-online/yii2-payment). Examples include:
 
@@ -16,6 +16,7 @@ You need an environment running PHP 5.4+ and an empty database.
 3. `composer install --no-dev`
 4. `./yii init`
 5. Follow the instructions on the screen to set up the database
+6. Open `<directory>/web` in your web browser
 
 See the [documentation](https://github.com/opus-online/yii2-payment) for `opus-online/yii2-ecom` for more. 
 
