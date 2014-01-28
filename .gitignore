@@ -1,5 +1,6 @@
 vendor
-runtime
+runtime/*
 composer.lock
 .idea
-config/db.php
+config/db-local.php
+config/banks-local.php
