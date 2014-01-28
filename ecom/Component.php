@@ -34,6 +34,7 @@ class Component extends \yii\base\Component
 
     /**
      * Override to to customize payment-related functionality
+     *
      * @var string|\opus\ecom\Payment
      */
     public $payment = '\opus\ecom\Payment';
@@ -51,13 +52,10 @@ class Component extends \yii\base\Component
             'session' => \Yii::$app->session,
             'component' => $this,
         ]);
-
         $paymentConf = is_string($this->payment) ? ['class' => $this->payment] : $this->payment;
         $this->payment = \Yii::createObject($paymentConf + [
             'component' => $this,
         ]);
-
-//        $this->test();
     }
 
     /**
@@ -69,28 +67,6 @@ class Component extends \yii\base\Component
     public function createKeyFilePath($file)
     {
         return \Yii::getAlias('@app/config/keys/' . $file);
-    }
-
-    private function test()
-    {
-//        $prices = [100, 200, 500, 1000, 5000, 10000, 12345, 99999999];
-//        foreach ($prices as $price) {
-//            $p = new Product();
-//            $p->price = $price;
-//            $p->save();
-//        }
-
-
-//        for ($i=0; $i<5; $i++) {
-//            $user = new User([
-//                'name' => 'Example User ' . ($i+1)
-//            ]);
-//            $user->save();
-//        }
-
-
-//        $product = Product::find()->one();
-//        $this->basket->add($product, ['quantity' => 2]);
     }
 
     /**

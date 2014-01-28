@@ -7,7 +7,6 @@
 
 namespace app\components;
 
-
 use app\models\ar\Discount;
 use opus\ecom\Basket;
 use opus\ecom\Component;
@@ -40,13 +39,10 @@ class MyEcomComponent extends Component
      */
     public function finalizeBasketPrice($price, Basket $basket)
     {
-        foreach ($basket->getItems() as $item)
-        {
+        foreach ($basket->getItems() as $item) {
             /** @var $model Discount */
-            if (($model = $item->getModel()) instanceof Discount)
-            {
-                if ($model->type === 'PERCENT')
-                {
+            if (($model = $item->getModel()) instanceof Discount) {
+                if ($model->type === 'PERCENT') {
                     $price *= (100 - $model->amount) / 100;
                 }
             }

@@ -7,9 +7,8 @@
 
 namespace opus\ecom\assets;
 
-
-use yii\web\AssetBundle;
 use Yii;
+use yii\web\AssetBundle;
 
 /**
  * Class PayAssetBundle

@@ -28,6 +28,14 @@ class Basket extends \yii\base\Component
     use SubComponentTrait;
 
     /**
+     * @var string Internal class name for holding basket elements
+     */
+    public $itemClass = 'opus\ecom\basket\Item';
+    /**
+     * @var array
+     */
+    protected $items = [];
+    /**
      * @var Session
      */
     private $_session;
@@ -39,15 +47,6 @@ class Basket extends \yii\base\Component
     private $_storage = 'opus\ecom\basket\storage\Session';
 
     /**
-     * @var string Internal class name for holding basket elements
-     */
-    public $itemClass = 'opus\ecom\basket\Item';
-    /**
-     * @var array
-     */
-    protected $items = [];
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -57,19 +56,45 @@ class Basket extends \yii\base\Component
     }
 
     /**
+     * @param Item[] $items
+     */
+    protected function setItems(array $items)
+    {
+        $this->clear(false);
+        foreach ($items as $item) {
+            $item->basket = $this;
+            $this->addItem($item);
+        }
+    }
+
+    /**
+     * @param bool $save
+     */
+    public function clear($save = true)
+    {
+        $this->items = [];
+        $save && $this->storage->save($this);
+    }
+
+    /**
+     * @param Item $item
+     */
+    protected function addItem(Item $item)
+    {
+        $this->items[$item->uniqueId] = $item;
+    }
+
+    /**
      * @param OrderableInterface $order
      * @param bool $clear
      * @throws \Exception
      */
     public function createOrder(OrderableInterface $order, $clear = true)
     {
-        try
-        {
+        try {
             $order->saveFromBasket($this);
             $clear && $this->clear();
-        }
-        catch (\Exception $exception)
-        {
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
@@ -91,15 +116,6 @@ class Basket extends \yii\base\Component
     }
 
     /**
-     * @param bool $save
-     */
-    public function clear($save = true)
-    {
-        $this->items = [];
-        $save && $this->storage->save($this);
-    }
-
-    /**
      * @param string $uniqueId
      * @param bool $save
      * @throws \yii\base\InvalidParamException
@@ -116,15 +132,12 @@ class Basket extends \yii\base\Component
     }
 
     /**
-     * @param Item[] $items
+     * @param string $modelClass If specified, only items of that AR model class will be counted
+     * @return int
      */
-    protected function setItems(array $items)
+    public function getCount($modelClass = null)
     {
-        $this->clear(false);
-        foreach ($items as $item) {
-            $item->basket = $this;
-            $this->addItem($item);
-        }
+        return count($this->getItems($modelClass));
     }
 
     /**
@@ -135,29 +148,13 @@ class Basket extends \yii\base\Component
     {
         $items = $this->items;
         if (!is_null($modelClass)) {
-            $items = array_filter($items, function($item) use ($modelClass) {
-                /** @var $item Item */
-                return $item->modelClass === $modelClass;
-            });
+            $items = array_filter($items,
+                function ($item) use ($modelClass) {
+                    /** @var $item Item */
+                    return $item->modelClass === $modelClass;
+                });
         }
         return $items;
-    }
-
-    /**
-     * @param Item $item
-     */
-    protected function addItem(Item $item)
-    {
-        $this->items[$item->uniqueId] = $item;
-    }
-
-    /**
-     * @param string $modelClass If specified, only items of that AR model class will be counted
-     * @return int
-     */
-    public function getCount($modelClass = null)
-    {
-        return count($this->getItems($modelClass));
     }
 
     /**
@@ -167,8 +164,7 @@ class Basket extends \yii\base\Component
     public function getTotalDue($format = true)
     {
         $sum = 0;
-        foreach ($this->getItems() as $item)
-        {
+        foreach ($this->getItems() as $item) {
             $sum += $item->getTotalPrice();
         }
         $sum = $this->component->finalizeBasketPrice($sum, $this);

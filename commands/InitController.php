@@ -29,14 +29,13 @@ class InitController extends Controller
     {
         $configPath = \Yii::getAlias('@app/config/db-local.php');
 
-        if (!file_exists($configPath) && $this->confirm('Write database parameters now?', true))
-        {
+        if (!file_exists($configPath) && $this->confirm('Write database parameters now?', true)) {
             $database = $this->prompt('Name of the **existing** database?', ['required' => true]);
             $hostname = $this->prompt('Hostname?', ['required' => true, 'default' => 'localhost']);
             $username = $this->prompt('Username?', ['required' => true, 'default' => 'root']);
             $password = $this->prompt('Password?');
 
-        $config = <<<"CONF"
+            $config = <<<"CONF"
 <?php
 
 return [
@@ -55,10 +54,8 @@ CONF;
             }
         }
 
-
         $configPath = \Yii::getAlias('@app/config/banks-local.php');
-        if (!file_exists($configPath) && $this->confirm('Write default bank config now?', true))
-        {
+        if (!file_exists($configPath) && $this->confirm('Write default bank config now?', true)) {
             $config = <<<"CONF"
 <?php
 return [
@@ -119,10 +116,9 @@ CONF;
         }
     }
 
-	public function actionDatabase()
-	{
-        if ($this->confirm('Import database dumps now?', true))
-        {
+    public function actionDatabase()
+    {
+        if ($this->confirm('Import database dumps now?', true)) {
             $db = \Yii::$app->db;
             $db->open();
             $db->pdo->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, 1);

@@ -33,9 +33,9 @@ interface OrderableInterface
      */
     public function getTransactionSum();
 
-
     /**
      * Returns the primary key for the ActiveRecord item
+     *
      * @return string
      */
     public function getPrimaryKey();

@@ -3,11 +3,7 @@
 namespace app\controllers;
 
 use Yii;
-use yii\web\AccessControl;
 use yii\web\Controller;
-use yii\web\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 /**
  * Class SiteController
@@ -18,22 +14,24 @@ use app\models\ContactForm;
 class SiteController extends Controller
 {
 
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
 
-	public function actions()
-	{
-		return [
-			'error' => [
-				'class' => 'yii\web\ErrorAction',
-			],
+        ];
+    }
 
-		];
-	}
-
-	public function actionIndex()
-	{
-		return $this->render('index');
-	}
-
-
-
+    /**
+     * @inheritdoc
+     */
+    public function actionIndex()
+    {
+        return $this->render('index');
+    }
 }

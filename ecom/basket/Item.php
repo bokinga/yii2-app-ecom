@@ -7,7 +7,6 @@
 
 namespace opus\ecom\basket;
 
-
 use opus\ecom\Basket;
 use opus\ecom\models\PurchasableInterface;
 use yii\base\Model;
@@ -17,6 +16,9 @@ use yii\base\Model;
  *
  * @author Ivo Kund <ivo@opus.ee>
  * @package opus\ecom\basket
+ *
+ * @property mixed $totalPrice
+ * @property PurchasableInterface $model
  */
 class Item extends Model implements \Serializable
 {
@@ -109,7 +111,15 @@ class Item extends Model implements \Serializable
     public function scenarios()
     {
         return [
-            self::OP_SERIALIZE => ['quantity', 'label', 'price', 'pkValue', 'modelClass', 'modelAttributes', 'uniqueId'],
+            self::OP_SERIALIZE => [
+                'quantity',
+                'label',
+                'price',
+                'pkValue',
+                'modelClass',
+                'modelAttributes',
+                'uniqueId'
+            ],
             self::OP_USER_INPUT => ['quantity'],
         ];
     }

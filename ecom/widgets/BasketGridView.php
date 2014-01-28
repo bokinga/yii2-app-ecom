@@ -8,8 +8,8 @@
 namespace opus\ecom\widgets;
 
 use opus\ecom\Basket;
-use yii\data\ArrayDataProvider;
 use Yii;
+use yii\data\ArrayDataProvider;
 
 /**
  * Class BasketGridView. Provides the default data provider with no pagination and all basket models
@@ -40,6 +40,4 @@ class BasketGridView extends GridView
         }
         parent::init();
     }
-
-
 }

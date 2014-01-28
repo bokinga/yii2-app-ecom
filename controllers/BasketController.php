@@ -7,17 +7,16 @@
 
 namespace app\controllers;
 
-
 use app\models\ar\Discount;
 use app\models\ar\Order;
 use app\models\ar\Product;
 use app\models\ar\User;
 use app\models\BasketModel;
 use opus\ecom\Basket;
+use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-use Yii;
 
 /**
  * Controller for basket actions
@@ -25,7 +24,7 @@ use Yii;
  * @author Ivo Kund <ivo@opus.ee>
  * @package app\controllers
  */
-class BasketController  extends Controller
+class BasketController extends Controller
 {
     /**
      * @var Basket
@@ -38,7 +37,7 @@ class BasketController  extends Controller
     public function init()
     {
         parent::init();
-        $this->basket =  \Yii::$app->ecom->basket;
+        $this->basket = \Yii::$app->ecom->basket;
     }
 
     /**
@@ -48,8 +47,7 @@ class BasketController  extends Controller
     {
         $model = new BasketModel;
 
-        if ($_POST && $model->load($_POST))
-        {
+        if ($_POST && $model->load($_POST)) {
             // create order
             $order = new Order([
                 'user_id' => $model->userId,
@@ -60,7 +58,6 @@ class BasketController  extends Controller
             $this->basket->createOrder($order);
             $this->redirect(['payment/pay', 'orderId' => $order->id]);
         }
-
 
         $params = [
             'basket' => $this->basket,

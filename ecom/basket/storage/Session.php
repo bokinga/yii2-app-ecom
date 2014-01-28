@@ -7,7 +7,6 @@
 
 namespace opus\ecom\basket\storage;
 
-
 use opus\ecom\Basket;
 use opus\ecom\basket\StorageInterface;
 
@@ -30,13 +29,11 @@ class Session implements StorageInterface
     public function load(Basket $basket)
     {
         $items = [];
-        if (false !== ($session = ($basket->session->get($this->basketVar, false))))
-        {
+        if (false !== ($session = ($basket->session->get($this->basketVar, false)))) {
             $items = unserialize($session);
         }
         return $items;
     }
-
 
     /**
      * @inheritdoc
