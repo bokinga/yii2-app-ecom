@@ -26,5 +26,19 @@
 			"type": "vcs",
 			"url": "https://github.com/opus-online/yii2-giimodel"
 		}
-	]
+	],
+	"scripts": {
+		"post-create-project-cmd": [
+			"yii\\composer\\Installer::setPermission"
+		]
+	},
+	"extra": {
+		"writable": [
+			"runtime",
+			"web/assets"
+		],
+		"executable": [
+			"yii"
+		]
+	}
 }
