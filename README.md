@@ -1,6 +1,6 @@
 Sample application using yii2-ecom
 =============
-The only purpose of this package is to demonstrate usage and features of the package [opus-online/yii2-ecom](https://github.com/opus-online/yii2-payment). Examples include:
+The only purpose of this package is to demonstrate usage and features of the package [opus-online/yii2-ecom](https://github.com/opus-online/yii2-ecom). Examples include:
 
 - Example database setup with products, discounts, orders, invoices, users and payment log
 - ActiveRecord models implementing Order and Product functionality
