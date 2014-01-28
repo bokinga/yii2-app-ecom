@@ -62,7 +62,7 @@ CONF;
             $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
         }
 
-        $configPath = \Yii::getAlias('@app/config/banks-default.php');
+        $configPath = \Yii::getAlias('@app/config/banks-local.php');
         if (!file_exists($configPath) && $this->confirm('Write default localized bank config now?', true)) {
 
             InstallHelper::ensureConfigFile($configPath, InstallHelper::CONF_LOCAL);
