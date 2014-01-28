@@ -1,0 +1,11 @@
+{
+	"package": {
+		"name": "opus-online/yii2-app-ecom",
+		"version": "1.0.0",
+		"source": {
+			"url": "https://github.com/opus-online/yii2-app-ecom.git",
+			"type": "git",
+			"reference": "master"
+		}
+	}
+}
