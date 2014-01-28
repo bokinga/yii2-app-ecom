@@ -12,7 +12,6 @@ use opus\ecom\basket\StorageInterface;
 use opus\ecom\models\OrderableInterface;
 use opus\ecom\models\PurchasableInterface;
 use yii\base\InvalidParamException;
-use yii\base\Object;
 use yii\web\Session;
 
 /**
@@ -24,9 +23,10 @@ use yii\web\Session;
  *
  * @property int $count
  */
-class Basket extends Object
+class Basket extends \yii\base\Component
 {
     use SubComponentTrait;
+
     /**
      * @var Session
      */
@@ -128,11 +128,19 @@ class Basket extends Object
     }
 
     /**
+     * @param string $modelClass If specified, only items of that AR model class will be returned
      * @return Item[]
      */
-    public function getItems()
+    public function getItems($modelClass = null)
     {
-        return $this->items;
+        $items = $this->items;
+        if (!is_null($modelClass)) {
+            $items = array_filter($items, function($item) use ($modelClass) {
+                /** @var $item Item */
+                return $item->modelClass === $modelClass;
+            });
+        }
+        return $items;
     }
 
     /**
@@ -144,11 +152,12 @@ class Basket extends Object
     }
 
     /**
+     * @param string $modelClass If specified, only items of that AR model class will be counted
      * @return int
      */
-    public function getCount()
+    public function getCount($modelClass = null)
     {
-        return count($this->items);
+        return count($this->getItems($modelClass));
     }
 
     /**
@@ -162,6 +171,7 @@ class Basket extends Object
         {
             $sum += $item->getTotalPrice();
         }
+        $sum = $this->component->finalizeBasketPrice($sum, $this);
         return $format ? $this->component->formatter->asPrice($sum) : $sum;
     }
 

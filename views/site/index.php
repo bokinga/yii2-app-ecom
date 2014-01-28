@@ -26,7 +26,7 @@ use opus\ecom\widgets\GridView;
                     ]);
                 ?>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-8">
                 <h2>Products</h2>
 
                 <?php
@@ -37,6 +37,7 @@ use opus\ecom\widgets\GridView;
                     ]),
                     'columns' => [
                         'id',
+                        'name',
                         'price:price',
                         [
                             'class' => \yii\grid\ActionColumn::className(),
@@ -46,6 +47,29 @@ use opus\ecom\widgets\GridView;
                                 }
                             ],
                             'template' => '{add-product}',
+                            'controller' => 'basket',
+                        ]
+                    ]
+                ])
+                ?>
+
+                <h2>Discounts</h2>
+                <?php
+                echo GridView::widget([
+                    'dataProvider' => new \yii\data\ActiveDataProvider([
+                        'query' => \app\models\ar\Discount::find(),
+                        'pagination' => false,
+                    ]),
+                    'columns' => [
+                        'label',
+                        [
+                            'class' => \yii\grid\ActionColumn::className(),
+                            'buttons' => [
+                                'add-discount' => function($url) {
+                                        return \yii\helpers\Html::a('Apply discount', $url);
+                                    }
+                            ],
+                            'template' => '{add-discount}',
                             'controller' => 'basket',
                         ]
                     ]

@@ -36,9 +36,9 @@ AppAsset::register($this);
 				'options' => ['class' => 'navbar-nav navbar-right'],
 				'items' => [
                     ['label' => 'Dashboard', 'url' => ['/site/index']],
-                    ['label' => sprintf('Basket (%d)', \Yii::$app->ecom->basket->count), 'url' => ['/basket/index']],
-                    ['label' => 'Orders & invoices', 'url' => ['/site/orders']],
-					['label' => 'Payment log', 'url' => ['/site/payment']],
+                    ['label' => sprintf('Basket (%d)', \Yii::$app->ecom->basket->getCount(\app\models\ar\Product::className())), 'url' => ['/basket/index']],
+                    ['label' => 'Orders & invoices', 'url' => ['/order/list']],
+					['label' => 'Payment log', 'url' => ['/payment/list']],
 				],
 			]);
 			NavBar::end();

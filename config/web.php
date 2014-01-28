@@ -17,7 +17,7 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'bankret' => 'order/bank-return'
+                'bankret' => 'payment/bank-return'
             ]
         ],
 		'errorHandler' => [
@@ -36,13 +36,9 @@ $config = [
         'ecom' => [
             'class' => 'app\components\MyEcomComponent',
             'payment' => [
-                'class' => 'app\components\MyPaymentHandler',
-                'params' => [
-                    'common' => [
-                        'returnRoute' => 'bankret',
-                    ],
-                    'adapters' => \yii\helpers\ArrayHelper::merge(require 'banks-default.php', require 'banks-local.php')
-                ]
+                'class' => 'opus\ecom\Payment',
+                'bankReturnRoute' => 'bankret',// use url alias to shorten the return url
+                'adapterConfig' => \yii\helpers\ArrayHelper::merge(require 'banks-default.php', require 'banks-local.php')
             ],
         ],
 	],

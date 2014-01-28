@@ -7,12 +7,14 @@
 
 namespace opus\ecom\widgets;
 
+use opus\ecom\assets\PayAssetBundle;
 use opus\ecom\models\OrderableInterface;
 use opus\ecom\SubComponentTrait;
+use opus\payment\services\payment\Form;
 use opus\payment\services\payment\Transaction;
 use opus\payment\services\Payment;
 use opus\payment\widgets\PaymentWidget;
-use yii\base\Widget;
+use yii\helpers\Html;
 
 /**
  * Class PaymentWidget
@@ -23,14 +25,8 @@ use yii\base\Widget;
  * @property OrderableInterface order
  * @property Payment service
  */
-class PaymentButtons extends Widget
+class PaymentButtons extends PaymentWidget
 {
-    use SubComponentTrait;
-
-    /**
-     * @var string Override this to customize your payment forms
-     */
-    public $buttonWidgetClass = '\opus\payment\widgets\PaymentWidget';
     /**
      * @var OrderableInterface
      */
@@ -43,17 +39,21 @@ class PaymentButtons extends Widget
      * @var Transaction
      */
     private $_transaction;
+    /**
+     * @var PayAssetBundle
+     */
+    private $_asset;
 
+    public function init()
+    {
+        $this->_asset = PayAssetBundle::register($this->view);
+        parent::init();
+    }
 
     public function run()
     {
+        $this->forms = $this->_service->generateForms($this->_transaction);
         parent::run();
-
-        foreach ($this->_service->generateForms($this->_transaction) as $form) {
-            /** @var $class PaymentWidget */
-            $class = $this->buttonWidgetClass;
-            echo $class::widget(['form' => $form, 'debug' => false]);
-        }
     }
 
     /**
@@ -84,5 +84,14 @@ class PaymentButtons extends Widget
     {
         $this->_transaction = $transaction;
         return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function generateSubmit(Form $form)
+    {
+        $image = $this->_asset->baseUrl . '/banks/' . strtolower($form->getProviderTag()) . '.jpg';
+        return Html::input('image', $form->getProviderName(), null, ['src' => $image]);
     }
 }

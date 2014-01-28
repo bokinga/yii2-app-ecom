@@ -8,8 +8,10 @@
 namespace app\controllers;
 
 
+use app\models\ar\Invoice;
 use app\models\ar\Order;
-use opus\ecom\Component;
+use yii\data\ActiveDataProvider;
+use yii\db\Expression;
 use yii\web\Controller;
 
 /**
@@ -21,46 +23,45 @@ use yii\web\Controller;
 class OrderController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    public $enableCsrfValidation = false;
-
-    /**
      * @param $orderId
      * @return string
      */
-    public function actionPay($orderId)
+    public function actionView($orderId)
     {
-        /** @var $ecom Component */
-        $ecom = \Yii::$app->ecom;
-
         $order = Order::find($orderId);
 
-        $buttonsWidget = $ecom->payment->createWidget($order, [
-            'buttonWidgetClass' => '\app\components\MyBankButtonWidget'
-        ]);
-
-        return $this->render('pay', [
-            'widget' => $buttonsWidget,
-            'order' => $order,
+        return $this->render('view', [
+            'order' => $order
         ]);
     }
 
-    public function actionBankReturn()
+    /**
+     * @return string
+     */
+    public function actionList()
     {
-        /** @var $ecom Component */
-        $ecom = \Yii::$app->ecom;
-
-        $model = $ecom->payment->handleResponse($_REQUEST, Order::className());
-
-        $this->redirect(['order/view', 'orderId' => $model->id]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Order::find(),
+        ]);
+        return $this->render('list', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     /**
      * @param $orderId
      */
-    public function actionView($orderId)
+    public function actionNewInvoice($orderId)
     {
-        var_dump('view order ' . $orderId);
+        $order = Order::find($orderId);
+
+        $invoice = new Invoice([
+            'order_id' => $order->id,
+            'due_amount' => $order->due_amount,
+            'due_datetime' => (new \DateTime('+10 days'))->format('Y-m-d H:i:s'),
+            'created' => new Expression('NOW()')
+        ]);
+        $invoice->save();
+        $this->redirect(['order/view', 'orderId' => $orderId]);
     }
 } 

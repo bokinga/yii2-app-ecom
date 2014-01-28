@@ -60,6 +60,17 @@ class Component extends \yii\base\Component
 //        $this->test();
     }
 
+    /**
+     * Override this to use custom location for payment key files. Default location is @app/config/keys/
+     *
+     * @param string $file
+     * @return bool|string
+     */
+    public function createKeyFilePath($file)
+    {
+        return \Yii::getAlias('@app/config/keys/' . $file);
+    }
+
     private function test()
     {
 //        $prices = [100, 200, 500, 1000, 5000, 10000, 12345, 99999999];
@@ -83,7 +94,7 @@ class Component extends \yii\base\Component
     }
 
     /**
-     * Override this to write custom parameters to the transaction before it's sent to the bank
+     * Override this to write custom parameters to the transaction (e.g. comment) before it's sent to the bank
      *
      * @param OrderableInterface $order
      * @param Transaction $transaction
@@ -91,5 +102,17 @@ class Component extends \yii\base\Component
     public function finalizeTransaction(OrderableInterface $order, Transaction $transaction)
     {
         // default behaviour does not alter transaction object
+    }
+
+    /**
+     * This method can be used to generate advanced discounts (buy 3, pay for 2 etc)
+     *
+     * @param integer $price
+     * @param Basket $basket
+     * @return integer
+     */
+    public function finalizeBasketPrice($price, Basket $basket)
+    {
+        return $price;
     }
 }

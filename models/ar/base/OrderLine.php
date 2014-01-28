@@ -11,7 +11,6 @@ namespace app\models\ar\base;
  * @property string $quantity
  * @property integer $due_amount
  *
- * @property \app\models\ar\InvoiceLine[] $invoiceLines
  * @property \app\models\ar\Order $order
  * @property \app\models\ar\Product $product
  * @method static \yii\db\ActiveQuery|\app\models\ar\OrderLine|null find($q=null)
@@ -50,14 +49,6 @@ abstract class OrderLine extends \yii\db\ActiveRecord
             'quantity' => 'Quantity',
             'due_amount' => 'Due Amount',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveRelation
-     */
-    public function getInvoiceLines()
-    {
-        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['order_line_id' => 'id']);
     }
 
     /**

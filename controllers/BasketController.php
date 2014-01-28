@@ -8,6 +8,7 @@
 namespace app\controllers;
 
 
+use app\models\ar\Discount;
 use app\models\ar\Order;
 use app\models\ar\Product;
 use app\models\ar\User;
@@ -57,7 +58,7 @@ class BasketController  extends Controller
             ]);
 
             $this->basket->createOrder($order);
-            $this->redirect(['order/pay', 'orderId' => $order->id]);
+            $this->redirect(['payment/pay', 'orderId' => $order->id]);
         }
 
 
@@ -85,6 +86,22 @@ class BasketController  extends Controller
     {
         $product = Product::find($id);
         $this->basket->add($product);
+        $this->redirect('site/index');
+    }
+
+    /**
+     * @param $id
+     */
+    public function actionAddDiscount($id)
+    {
+        $discount = Discount::find($id);
+        $this->basket->add($discount);
+        $this->redirect('basket/index');
+    }
+
+    public function actionClear()
+    {
+        $this->basket->clear(true);
         $this->redirect('basket/index');
     }
 } 

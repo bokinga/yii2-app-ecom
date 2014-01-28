@@ -7,12 +7,15 @@
 
 namespace opus\ecom\models;
 
+use opus\ecom\Basket;
+use yii\db\ActiveRecordInterface;
+
 /**
  * Interface PurchasableInterface
  *
  * @package opus\ecom\models
  */
-interface PurchasableInterface
+interface PurchasableInterface extends ActiveRecordInterface
 {
     /**
      * Returns the ActiveRecord class name for the object
@@ -21,16 +24,14 @@ interface PurchasableInterface
     public static function className();
 
     /**
-     * Returns the primary key for the ActiveRecord item
-     * @return string
-     */
-    public function getPrimaryKey();
-
-    /**
      * Returns the label for the purchasable item (displayed in basket etc)
      * @return string
      */
     public function getLabel();
 
+    /**
+     * Returns the price of the element. This can be positive or negative (on coupon-type discounts)
+     * @return mixed
+     */
     public function getPrice();
 }

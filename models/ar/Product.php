@@ -16,9 +16,12 @@ class Product extends base\Product implements PurchasableInterface
      */
     public function getLabel()
     {
-        return 'Product ' . $this->id;
+        return $this->name;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getPrice()
     {
         return $this->price;

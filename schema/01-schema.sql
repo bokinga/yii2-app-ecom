@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS `eco_discount`;
+CREATE TABLE `eco_discount` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+	`label` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+	`amount` int(11) NOT NULL,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
 DROP TABLE IF EXISTS `eco_invoice`;
 CREATE TABLE `eco_invoice` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -8,25 +18,6 @@ CREATE TABLE `eco_invoice` (
 	PRIMARY KEY (`id`),
 	KEY `order_id` (`order_id`),
 	CONSTRAINT `FK_eco_invoice_eco_order` FOREIGN KEY (`order_id`) REFERENCES `eco_order` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
-DROP TABLE IF EXISTS `eco_invoice_line`;
-CREATE TABLE `eco_invoice_line` (
-	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-	`invoice_id` int(10) unsigned NOT NULL,
-	`order_line_id` int(10) unsigned DEFAULT NULL,
-	`product_id` int(10) unsigned DEFAULT NULL,
-	`item_quantity` decimal(10,2) NOT NULL,
-	`item_label` varchar(255) NOT NULL,
-	`due_amount` varchar(255) NOT NULL,
-	PRIMARY KEY (`id`),
-	KEY `invoice_id` (`invoice_id`),
-	KEY `order_line_id` (`order_line_id`),
-	KEY `product_id` (`product_id`),
-	CONSTRAINT `FK_eco_invoice_line_eco_product` FOREIGN KEY (`product_id`) REFERENCES `eco_product` (`id`),
-	CONSTRAINT `FK_eco_invoice_line_eco_invoice` FOREIGN KEY (`invoice_id`) REFERENCES `eco_invoice` (`id`),
-	CONSTRAINT `FK_eco_invoice_line_eco_order_line` FOREIGN KEY (`order_line_id`) REFERENCES `eco_order_line` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -71,14 +62,15 @@ CREATE TABLE `eco_payment` (
 	PRIMARY KEY (`id`),
 	KEY `order_id` (`order_id`),
 	KEY `user_id` (`user_id`),
-	CONSTRAINT `FK_eco_payment_eco_user` FOREIGN KEY (`user_id`) REFERENCES `eco_user` (`id`),
-	CONSTRAINT `FK_eco_payment_eco_order` FOREIGN KEY (`order_id`) REFERENCES `eco_order` (`id`)
+	CONSTRAINT `FK_eco_payment_eco_order` FOREIGN KEY (`order_id`) REFERENCES `eco_order` (`id`),
+	CONSTRAINT `FK_eco_payment_eco_user` FOREIGN KEY (`user_id`) REFERENCES `eco_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 DROP TABLE IF EXISTS `eco_product`;
 CREATE TABLE `eco_product` (
 	`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+	`name` varchar(255) NOT NULL,
 	`price` int(11) NOT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -91,3 +83,5 @@ CREATE TABLE `eco_user` (
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+-- 2014-01-28 09:46:43

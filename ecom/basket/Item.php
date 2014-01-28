@@ -55,19 +55,52 @@ class Item extends Model implements \Serializable
     public $quantity = 1;
 
     /**
+     * @var array Model attributes stored for serializing/unserializing objects
+     */
+    public $modelAttributes;
+
+    /**
+     * @var PurchasableInterface
+     */
+    private $_model;
+
+    /**
      * @param PurchasableInterface $element
      * @param array $options
      */
     public function __construct(PurchasableInterface $element, array $options)
     {
+        // get model attributes
+        $modelAttributes = [];
+        foreach ($element->attributes() as $attribute) {
+            $modelAttributes[$attribute] = $element->$attribute;
+        }
+
         $options += [
             'uniqueId' => md5(uniqid('_bs', true)),
             'modelClass' => $element->className(),
             'pkValue' => $element->getPrimaryKey(),
             'price' => $element->getPrice(),
             'label' => $element->getLabel(),
+            'modelAttributes' => $modelAttributes,
         ];
         parent::__construct($options);
+    }
+
+    /**
+     * @param bool $reload Whether to reload the item from database
+     * @return PurchasableInterface
+     */
+    public function getModel($reload = false)
+    {
+        if (true === $reload) {
+            $this->_model = call_user_func([$this->modelClass, 'find'], $this->pkValue);
+        } else {
+            if (!isset($this->_model)) {
+                $this->_model = new $this->modelClass($this->modelAttributes);
+            }
+        }
+        return $this->_model;
     }
 
     /**
@@ -76,7 +109,7 @@ class Item extends Model implements \Serializable
     public function scenarios()
     {
         return [
-            self::OP_SERIALIZE => ['quantity', 'label', 'price', 'pkValue', 'modelClass', 'uniqueId'],
+            self::OP_SERIALIZE => ['quantity', 'label', 'price', 'pkValue', 'modelClass', 'modelAttributes', 'uniqueId'],
             self::OP_USER_INPUT => ['quantity'],
         ];
     }
