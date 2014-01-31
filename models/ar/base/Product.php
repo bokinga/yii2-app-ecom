@@ -8,6 +8,7 @@ namespace app\models\ar\base;
  * @property integer $id
  * @property string $name
  * @property integer $price
+ * @property string $vat
  *
  * @property \app\models\ar\InvoiceLine[] $invoiceLines
  * @property \app\models\ar\OrderLine[] $orderLines
@@ -31,6 +32,7 @@ abstract class Product extends \yii\db\ActiveRecord
         return [
 			[['price'], 'required'],
 			[['price'], 'integer'],
+			[['vat'], 'number'],
 			[['name'], 'string', 'max' => 255]
 		];
     }
@@ -44,6 +46,7 @@ abstract class Product extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'price' => 'Price',
+            'vat' => 'Vat',
         ];
     }
 

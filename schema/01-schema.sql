@@ -136,6 +136,7 @@ CREATE TABLE `eco_product`
 	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255),
 	`price` INTEGER NOT NULL,
+	`vat` DECIMAL(3,2),
 	PRIMARY KEY (`id`)
 
 ) 
