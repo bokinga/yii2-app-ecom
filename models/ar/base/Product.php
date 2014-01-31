@@ -9,6 +9,7 @@ namespace app\models\ar\base;
  * @property string $name
  * @property integer $price
  *
+ * @property \app\models\ar\InvoiceLine[] $invoiceLines
  * @property \app\models\ar\OrderLine[] $orderLines
  * @method static \yii\db\ActiveQuery|\app\models\ar\Product|null find($q=null)
  */
@@ -28,7 +29,7 @@ abstract class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-			[['name', 'price'], 'required'],
+			[['price'], 'required'],
 			[['price'], 'integer'],
 			[['name'], 'string', 'max' => 255]
 		];
@@ -44,6 +45,14 @@ abstract class Product extends \yii\db\ActiveRecord
             'name' => 'Name',
             'price' => 'Price',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveRelation
+     */
+    public function getInvoiceLines()
+    {
+        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['product_id' => 'id']);
     }
 
     /**

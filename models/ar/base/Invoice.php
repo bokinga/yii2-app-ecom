@@ -12,6 +12,7 @@ namespace app\models\ar\base;
  * @property string $created
  *
  * @property \app\models\ar\Order $order
+ * @property \app\models\ar\InvoiceLine[] $invoiceLines
  * @method static \yii\db\ActiveQuery|\app\models\ar\Invoice|null find($q=null)
  */
 abstract class Invoice extends \yii\db\ActiveRecord
@@ -56,5 +57,13 @@ abstract class Invoice extends \yii\db\ActiveRecord
     public function getOrder()
     {
         return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveRelation
+     */
+    public function getInvoiceLines()
+    {
+        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['invoice_id' => 'id']);
     }
 }

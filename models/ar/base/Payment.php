@@ -14,8 +14,8 @@ namespace app\models\ar\base;
  * @property string $data_dump
  * @property string $created
  *
- * @property \app\models\ar\Order $order
  * @property \app\models\ar\User $user
+ * @property \app\models\ar\Order $order
  * @method static \yii\db\ActiveQuery|\app\models\ar\Payment|null find($q=null)
  */
 abstract class Payment extends \yii\db\ActiveRecord
@@ -63,16 +63,16 @@ abstract class Payment extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveRelation
      */
-    public function getOrder()
+    public function getUser()
     {
-        return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(\app\models\ar\User::className(), ['id' => 'user_id']);
     }
 
     /**
      * @return \yii\db\ActiveRelation
      */
-    public function getUser()
+    public function getOrder()
     {
-        return $this->hasOne(\app\models\ar\User::className(), ['id' => 'user_id']);
+        return $this->hasOne(\app\models\ar\Order::className(), ['id' => 'order_id']);
     }
 }
