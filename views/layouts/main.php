@@ -1,8 +1,8 @@
 <?php
+use app\models\ar\Product;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 /**
@@ -36,7 +36,7 @@ AppAsset::register($this);
 				'options' => ['class' => 'navbar-nav navbar-right'],
 				'items' => [
                     ['label' => 'Dashboard', 'url' => ['/site/index']],
-                    ['label' => sprintf('Basket (%d)', \Yii::$app->ecom->basket->getCount(\app\models\ar\Product::className())), 'url' => ['/basket/index']],
+                    ['label' => sprintf('Basket (%d)', \Yii::$app->ecom->basket->getCount(Product::className())), 'url' => ['/basket/index']],
                     ['label' => 'Orders & invoices', 'url' => ['/order/list']],
 					['label' => 'Payment log', 'url' => ['/payment/list']],
 				],

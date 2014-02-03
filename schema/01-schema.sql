@@ -16,8 +16,6 @@ DROP TABLE IF EXISTS `eco_discount` CASCADE
 ;
 DROP TABLE IF EXISTS `eco_invoice` CASCADE
 ;
-DROP TABLE IF EXISTS `eco_invoice_line` CASCADE
-;
 DROP TABLE IF EXISTS `eco_order` CASCADE
 ;
 DROP TABLE IF EXISTS `eco_order_line` CASCADE
@@ -61,24 +59,6 @@ CREATE TABLE `eco_invoice`
 	`created` DATETIME NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY (`order_id`)
-
-) 
-;
-
-
-CREATE TABLE `eco_invoice_line`
-(
-	`id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
-	`invoice_id` INTEGER UNSIGNED NOT NULL,
-	`order_line_id` INTEGER UNSIGNED,
-	`product_id` INTEGER UNSIGNED,
-	`item_quantity` DECIMAL(10,2) NOT NULL,
-	`item_label` VARCHAR(255) NOT NULL,
-	`due_amount` VARCHAR(255) NOT NULL,
-	PRIMARY KEY (`id`),
-	KEY (`invoice_id`),
-	KEY (`order_line_id`),
-	KEY (`product_id`)
 
 ) 
 ;
@@ -160,18 +140,6 @@ SET FOREIGN_KEY_CHECKS=1;
 --  Create Foreign Key Constraints 
 ALTER TABLE `eco_invoice` ADD CONSTRAINT `FK_eco_invoice_eco_order` 
 	FOREIGN KEY (`order_id`) REFERENCES `eco_order` (`id`)
-;
-
-ALTER TABLE `eco_invoice_line` ADD CONSTRAINT `FK_eco_invoice_line_eco_invoice` 
-	FOREIGN KEY (`invoice_id`) REFERENCES `eco_invoice` (`id`)
-;
-
-ALTER TABLE `eco_invoice_line` ADD CONSTRAINT `FK_eco_invoice_line_eco_order_line` 
-	FOREIGN KEY (`order_line_id`) REFERENCES `eco_order_line` (`id`)
-;
-
-ALTER TABLE `eco_invoice_line` ADD CONSTRAINT `FK_eco_invoice_line_eco_product` 
-	FOREIGN KEY (`product_id`) REFERENCES `eco_product` (`id`)
 ;
 
 ALTER TABLE `eco_order` ADD CONSTRAINT `FK_eco_order_eco_user` 

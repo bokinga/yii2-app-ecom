@@ -7,6 +7,7 @@
  * @var \opus\ecom\Basket $basket
  * @var \app\models\ar\User[] $users
  */
+use app\models\ar\Product;
 use yii\helpers\Html;
 
 ?>
@@ -18,11 +19,12 @@ use yii\helpers\Html;
         <?php
         echo \opus\ecom\widgets\BasketGridView::widget([
             'basket' => $basket,
-            'itemClass' => \app\models\ar\Product::className(),
+            'itemClass' => Product::className(),
             'columns' => [
                 ['class' => \yii\grid\SerialColumn::className()],
                 'label',
                 'price:price',
+                'vatPercent',
                 'quantity',
                 'totalPrice:price',
                 [
@@ -42,12 +44,18 @@ use yii\helpers\Html;
         ?>
     </div>
 </div>
-<div class="col-lg-3 row">
+<div class="col-lg-4 row">
+    <h4>
+        Total: <?= $basket->getItemsTotalPrice(true, false, Product::className()) ?>
+        + <?= $basket->getTotalVat() ?> (VAT)
+        = <?= $basket->getItemsTotalPrice(true, true, Product::className()) ?>
+    </h4>
+    <h4>Discounts: <?= $basket->getTotalDiscounts(true, Product::className()) ?> </h4>
     <h3>Total due: <?= $basket->getTotalDue() ?> </h3>
     <?php
-    $form = \yii\widgets\ActiveForm::begin();
-    echo $form->field($model, 'userId')->dropDownList($users);
-    echo Html::submitButton('Post order', ['class' => 'btn btn-lg btn-success']);
-    $form->end();
+        $form = \yii\widgets\ActiveForm::begin();
+        echo $form->field($model, 'userId')->dropDownList($users);
+        echo Html::submitButton('Post order', ['class' => 'btn btn-lg btn-success']);
+        $form->end();
     ?>
 </div>
