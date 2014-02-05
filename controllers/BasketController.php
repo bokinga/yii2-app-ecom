@@ -82,9 +82,7 @@ class BasketController extends Controller
     public function actionAddProduct($id)
     {
         $product = Product::find($id);
-        $this->basket->add($product, [
-            'vatPercent' => $product->vat
-        ]);
+        $this->basket->add($product);
         $this->redirect('site/index');
     }
 

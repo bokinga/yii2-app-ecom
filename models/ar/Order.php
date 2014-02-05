@@ -3,7 +3,7 @@
 namespace app\models\ar;
 
 use opus\ecom\Basket;
-use opus\ecom\models\OrderableInterface;
+use opus\ecom\models\OrderInterface;
 use opus\payment\services\payment\Response;
 use yii\db\Expression;
 
@@ -11,7 +11,7 @@ use yii\db\Expression;
  * This is the model class for table "eco_order".
  *
  */
-class Order extends base\Order implements OrderableInterface
+class Order extends base\Order implements OrderInterface
 {
 
     /**
@@ -31,13 +31,14 @@ class Order extends base\Order implements OrderableInterface
                 throw new \RuntimeException('Could not save order model');
             }
 
-            foreach ($basket->getItems(Product::className()) as $item)
+            /** @var $item Product */
+            foreach ($basket->getItems(Basket::ITEM_PRODUCT) as $item)
             {
                 $model = new OrderLine([
                     'order_id' => $this->id,
-                    'product_id' => $item->pkValue,
-                    'quantity' => $item->quantity,
-                    'due_amount' => $item->price,
+                    'product_id' => $item->id,
+                    'quantity' => $item->basketQuantity,
+                    'due_amount' => $item->totalPrice,
                 ]);
                 if (!$model->save()) {
                     throw new \RuntimeException('Could not save order line model');
@@ -67,7 +68,7 @@ class Order extends base\Order implements OrderableInterface
 
     /**
      * @param Response $response
-     * @return OrderableInterface
+     * @return OrderInterface
      */
     public function bankReturn(Response $response)
     {

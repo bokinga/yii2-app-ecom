@@ -10,7 +10,6 @@ namespace app\models\ar\base;
  * @property integer $price
  * @property string $vat
  *
- * @property \app\models\ar\InvoiceLine[] $invoiceLines
  * @property \app\models\ar\OrderLine[] $orderLines
  * @method static \yii\db\ActiveQuery|\app\models\ar\Product|null find($q=null)
  */
@@ -48,14 +47,6 @@ abstract class Product extends \yii\db\ActiveRecord
             'price' => 'Price',
             'vat' => 'Vat',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveRelation
-     */
-    public function getInvoiceLines()
-    {
-        return $this->hasMany(\app\models\ar\InvoiceLine::className(), ['product_id' => 'id']);
     }
 
     /**

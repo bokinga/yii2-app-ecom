@@ -7,8 +7,8 @@
  * @var \opus\ecom\Basket $basket
  * @var \app\models\ar\User[] $users
  */
-use app\models\ar\Product;
 use yii\helpers\Html;
+use opus\ecom\Basket;
 
 ?>
 
@@ -17,15 +17,17 @@ use yii\helpers\Html;
     <div class="col-lg-8 ">
 
         <?php
+        // render products table
         echo \opus\ecom\widgets\BasketGridView::widget([
             'basket' => $basket,
-            'itemClass' => Product::className(),
             'columns' => [
                 ['class' => \yii\grid\SerialColumn::className()],
+
+                // all the attributes are accessed directly from the Product AR model (via properties or magic getters)
                 'label',
                 'price:price',
-                'vatPercent',
-                'quantity',
+                'vat:percent',
+                'basketQuantity',
                 'totalPrice:price',
                 [
                     'class' => \yii\grid\ActionColumn::className(),
@@ -34,9 +36,10 @@ use yii\helpers\Html;
             ]
         ]);
 
+        // render discounts table
         echo \opus\ecom\widgets\BasketGridView::widget([
             'basket' => $basket,
-            'itemClass' => \app\models\ar\Discount::className(),
+            'itemType' => Basket::ITEM_DISCOUNT, // ask for discounts
             'layout' => '{items}',
             'columns' => ['label:text:Discounts']
         ]);
@@ -45,13 +48,29 @@ use yii\helpers\Html;
     </div>
 </div>
 <div class="col-lg-4 row">
+
+    <?php
+    // calls getTotalPrice from every product model
+    $totalPrice = $basket->getAttributeTotal('totalPrice', Basket::ITEM_PRODUCT);
+
+    // calls getTotalVat from every product model
+    $vat = $basket->getAttributeTotal('totalVat', Basket::ITEM_PRODUCT);
+
+    // subtract to find out the price without vat
+    $priceWithoutVat = $totalPrice - $vat;
+
+    ?>
+
     <h4>
-        Total: <?= $basket->getItemsTotalPrice(true, false, Product::className()) ?>
-        + <?= $basket->getTotalVat() ?> (VAT)
-        = <?= $basket->getItemsTotalPrice(true, true, Product::className()) ?>
+        Total: <?= \Yii::$app->ecom->formatter->asPrice($priceWithoutVat) ?>
+        + <?= \Yii::$app->ecom->formatter->asPrice($vat) ?> (VAT)
+        = <?= \Yii::$app->ecom->formatter->asPrice($totalPrice) ?>
     </h4>
-    <h4>Discounts: <?= $basket->getTotalDiscounts(true, Product::className()) ?> </h4>
-    <h3>Total due: <?= $basket->getTotalDue() ?> </h3>
+
+    <h4>Discounts: <?= $basket->getTotalDiscounts() ?> </h4>
+    <h3>Total due: <?= $basket->getTotalDue(); ?> </h3>
+
+
     <?php
         $form = \yii\widgets\ActiveForm::begin();
         echo $form->field($model, 'userId')->dropDownList($users);

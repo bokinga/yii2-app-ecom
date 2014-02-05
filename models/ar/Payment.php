@@ -8,23 +8,5 @@ namespace app\models\ar;
  */
 class Payment extends base\Payment
 {
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return array_merge(parent::attributeLabels(), [
-            // add additional translations
-        ]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return array_merge(parent::rules(), [
-            // add additional rules
-        ]);
-    }
+    // nothing interesting here
 }

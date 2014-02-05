@@ -2,18 +2,18 @@
 
 namespace app\models\ar;
 
-use opus\ecom\models\PurchasableInterface;
+use opus\ecom\models\BasketDiscountInterface;
+use opus\ecom\Basket;
+
 
 /**
  * This is the model class for table "eco_discount".
  *
  */
-class Discount extends base\Discount implements PurchasableInterface
+class Discount extends base\Discount implements BasketDiscountInterface
 {
     /**
-     * Returns the label for the purchasable item (displayed in basket etc)
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getLabel()
     {
@@ -21,14 +21,28 @@ class Discount extends base\Discount implements PurchasableInterface
     }
 
     /**
-     * @return int
+     * @inheritdoc
      */
-    public function getPrice()
+    public function applyToBasket(Basket $basket, &$basketTotalSum)
     {
-        $price = 0;
         if ($this->type === 'COUPON') {
-            $price = -$this->amount;
+            $basketTotalSum -= $this->amount;
         }
-        return $price;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function serialize()
+    {
+        return serialize($this->attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function unserialize($serialized)
+    {
+        $this->setAttributes(unserialize($serialized), false);
     }
 }

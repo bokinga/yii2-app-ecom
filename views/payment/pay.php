@@ -4,7 +4,7 @@
  * @author Ivo Kund <ivo@opus.ee>
  * @date 24.01.14
  * @var \yii\web\View $this
- * @var \opus\ecom\models\OrderableInterface $order
+ * @var \opus\ecom\models\OrderInterface $order
  */
 ?>
 
