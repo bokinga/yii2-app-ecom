@@ -81,7 +81,7 @@ class BasketController extends Controller
      */
     public function actionAddProduct($id)
     {
-        $product = Product::find($id);
+        $product = Product::findOne($id);
         $this->basket->add($product);
         $this->redirect('site/index');
     }
@@ -91,7 +91,7 @@ class BasketController extends Controller
      */
     public function actionAddDiscount($id)
     {
-        $discount = Discount::find($id);
+        $discount = Discount::findOne($id);
         $this->basket->add($discount);
         $this->redirect('basket/index');
     }

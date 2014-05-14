@@ -23,7 +23,7 @@ echo \opus\ecom\widgets\GridView::widget([
             'template' => '{view}',
             'buttons' => [
                 'view' => function($url, $model) {
-                        return \yii\helpers\Html::a('Details', \Yii::$app->urlManager->createUrl('payment/view', ['paymentId' => $model->id]));
+                        return \yii\helpers\Html::a('Details', ['payment/view', 'paymentId' => $model->id]);
                     }
             ]
         ]

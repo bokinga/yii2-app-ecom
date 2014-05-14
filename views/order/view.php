@@ -43,7 +43,7 @@ use yii\helpers\Html;
     ]);
 
     if ($order->status === 'new') {
-        echo Html::a('Go to payment', \Yii::$app->urlManager->createUrl('payment/pay', ['orderId' => $order->id]), ['class' => 'btn btn-lg btn-danger']);
+        echo Html::a('Go to payment', ['payment/pay', 'orderId' => $order->id], ['class' => 'btn btn-lg btn-danger']);
     }
     ?>
 </div>
@@ -63,6 +63,7 @@ use yii\helpers\Html;
             'created:datetime:Created'
         ]
     ]);
+
+    echo Html::a('Issue a new invoice', ['order/new-invoice', 'orderId' => $order->id], ['class' => 'btn btn-lg btn-success']);
     ?>
-    <a class="btn btn-lg btn-success" href="<?=\Yii::$app->urlManager->createUrl('order/new-invoice', ['orderId' => $order->id])?>">Issue a new invoice</a>
 </div>

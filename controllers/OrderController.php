@@ -28,7 +28,7 @@ class OrderController extends Controller
      */
     public function actionView($orderId)
     {
-        $order = Order::find($orderId);
+        $order = Order::findOne($orderId);
 
         return $this->render('view', [
             'order' => $order
@@ -53,7 +53,7 @@ class OrderController extends Controller
      */
     public function actionNewInvoice($orderId)
     {
-        $order = Order::find($orderId);
+        $order = Order::findOne($orderId);
 
         $invoice = new Invoice([
             'order_id' => $order->id,

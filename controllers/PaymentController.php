@@ -33,7 +33,7 @@ class PaymentController extends Controller
      */
     public function actionPay($orderId)
     {
-        $order = Order::find($orderId);
+        $order = Order::findOne($orderId);
 
         return $this->render('pay', [
             'order' => $order,
@@ -70,7 +70,7 @@ class PaymentController extends Controller
      */
     public function actionView($paymentId)
     {
-        $payment = Payment::find($paymentId);
+        $payment = Payment::findOne($paymentId);
         return $this->render('view', [
             'payment' => $payment,
         ]);

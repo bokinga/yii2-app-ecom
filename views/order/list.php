@@ -25,7 +25,7 @@
                     'template' => '{view}',
                     'buttons' => [
                         'view' => function($url, $model) {
-                            return \yii\helpers\Html::a('Details', \Yii::$app->urlManager->createUrl('order/view', ['orderId' => $model->id]));
+                            return \yii\helpers\Html::a('Details', ['order/view', 'orderId' => $model->id]);
                         }
                     ]
                 ]
