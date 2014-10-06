@@ -1,46 +1,46 @@
 {
-	"name": "opus-online/yii2-app-ecom",
-	"description": "Sample application using the yii2-ecom package",
-	"minimum-stability": "dev",
-	"type": "project",
-	"license": "proprietary",
-	"authors": [
-		{
-			"name": "Ivo Kund",
-			"email": "ivo@opus.ee"
-		}
-	],
-	"require": {
-		"php": ">=5.4.0",
-		"yiisoft/yii2": "*",
+    "name": "opus-online/yii2-app-ecom",
+    "description": "Sample application using the yii2-ecom package",
+    "minimum-stability": "dev",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Ivo Kund",
+            "email": "ivo@opus.ee"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "*",
         "opus-online/yii2-ecom": "1.0.0-alpha2@dev"
-	},
-	"require-dev": {
-		"yiisoft/yii2-debug": "*",
-		"yiisoft/yii2-gii": "*",
-		"opus-online/yii2-giimodel": "*"
-	},
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/opus-online/yii2-giimodel"
-		}
-	],
-	"scripts": {
-		"post-create-project-cmd": [
-			"yii\\composer\\Installer::setPermission"
-		]
-	},
-	"extra": {
-		"writable": [
-			"runtime",
-			"web/assets"
-		],
-		"executable": [
-			"yii"
-		],
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "opus-online/yii2-giimodel": "*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/opus-online/yii2-giimodel"
+        }
+    ],
+    "scripts": {
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::setPermission"
+        ]
+    },
+    "extra": {
+        "writable": [
+            "runtime",
+            "web/assets"
+        ],
+        "executable": [
+            "yii"
+        ],
         "asset-installer-paths": {
             "bower-asset-library": "vendor/bower"
         }
-	}
+    }
 }
