@@ -49,7 +49,7 @@ return [
 
 CONF;
             if (file_put_contents($configPath, $config)) {
-                \Yii::$app->setComponent('db', require $configPath);
+                \Yii::$app->set('db', require $configPath);
                 $this->stdout("Wrote data to: {$configPath}" . \PHP_EOL);
                 $this->actionDatabase();
             }
