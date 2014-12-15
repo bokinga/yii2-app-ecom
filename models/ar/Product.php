@@ -74,4 +74,35 @@ class Product extends base\Product implements BasketProductInterface
     {
         $this->setAttributes(unserialize($serialized), false);
     }
+
+    /**
+     * Checks if the item is valid
+     * Errors are viewable through $this->getErrors();
+     *
+     * @return bool
+     */
+    public function validateItem()
+    {
+        return true;
+    }
+
+    /**
+     * Returns all errors for current model (after validating)
+     *
+     * @return string[]
+     */
+    public function getItemErrors()
+    {
+        return [];
+    }
+
+    /**
+     * Returns the primary key for the ActiveRecord item
+     *
+     * @return string
+     */
+    public function getPKValue()
+    {
+        return $this->id;
+    }
 }

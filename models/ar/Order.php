@@ -89,4 +89,14 @@ class Order extends base\Order implements OrderInterface
 
         return $this;
     }
+
+    /**
+     * Returns the primary key for the ActiveRecord item
+     *
+     * @return string
+     */
+    public function getPKValue()
+    {
+        return $this->id;
+    }
 }

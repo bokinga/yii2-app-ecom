@@ -12,12 +12,12 @@
   ],
   "require": {
     "php": ">=5.4.0",
-    "yiisoft/yii2": "*",
-        "opus-online/yii2-ecom": "1.0.0-alpha2@dev"
+    "yiisoft/yii2": "2.0.0",
+	"opus-online/yii2-ecom": "~1.0.1"
   },
   "require-dev": {
-    "yiisoft/yii2-debug": "*",
-    "yiisoft/yii2-gii": "*",
+    "yiisoft/yii2-debug": "2.0.0",
+    "yiisoft/yii2-gii": "2.0.0",
     "opus-online/yii2-giimodel": "*"
   },
   "repositories": [

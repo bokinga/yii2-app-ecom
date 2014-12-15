@@ -69,36 +69,42 @@ class BasketController extends Controller
 
     /**
      * @param $id
+     * @return \yii\web\Response
      */
     public function actionDelete($id)
     {
         $this->basket->remove($id);
-        $this->redirect('basket/index');
+        return $this->redirect(['basket/index']);
     }
 
     /**
      * @param $id
+     * @return \yii\web\Response
      */
     public function actionAddProduct($id)
     {
         $product = Product::findOne($id);
         $this->basket->add($product);
-        $this->redirect('site/index');
+        return $this->redirect(['site/index']);
     }
 
     /**
      * @param $id
+     * @return \yii\web\Response
      */
     public function actionAddDiscount($id)
     {
         $discount = Discount::findOne($id);
         $this->basket->add($discount);
-        $this->redirect('basket/index');
+        return $this->redirect(['basket/index']);
     }
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionClear()
     {
         $this->basket->clear(true);
-        $this->redirect('basket/index');
+        return $this->redirect(['basket/index']);
     }
 } 
