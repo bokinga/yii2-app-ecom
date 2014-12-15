@@ -26,6 +26,11 @@
       "url": "https://github.com/opus-online/yii2-giimodel"
     }
   ],
+  "scripts": {
+    "post-create-project-cmd": [
+      "yii\\composer\\Installer::postCreateProject"
+    ]
+  },
   "extra": {
 	"yii\\composer\\Installer::postCreateProject": {
 	  "setPermission": [
