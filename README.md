@@ -1,3 +1,5 @@
+**Warning: This package is not maintained any more**
+
 Sample application using yii2-ecom
 =============
 The only purpose of this package is to demonstrate usage and features of the package [opus-online/yii2-ecom](https://github.com/opus-online/yii2-ecom). Examples include:
